@@ -103,54 +103,54 @@ This document outlines the architecture, database schema, API specifications, an
 - Install dependencies: express, pg, postgis, jsonwebtoken, bcrypt, express-rate-limit, joi (validation), helmet, etc. ✅ (done)
 
 ### 2. Database Design & Migration
-- Write SQL migration scripts for schema
-- Enable PostGIS extension
-- Add GIST index for geospatial queries
-- Use encryption for sensitive location columns (e.g., pgcrypto)
+- Write SQL migration scripts for schema ✅ (done, see migrations.sql)
+- Enable PostGIS extension ✅ (included in migration script)
+- Add GIST index for geospatial queries ✅ (included in migration script)
+- Use encryption for sensitive location columns (e.g., pgcrypto) ✅ (included in migration script, recommend app-level encryption for production)
 
 ### 3. Authentication & User Management
-- Implement registration & login endpoints
-- Hash passwords with bcrypt
-- Issue JWTs on login
-- Middleware for JWT validation
-- Integrate social login (OAuth 2.0) for Google and Facebook:
-  - Use Passport.js with Google and Facebook strategies
-  - On successful OAuth login, create or update user record
-  - Issue JWT for authenticated sessions
-  - Store OAuth provider and provider user ID in users table
+- Implement registration & login endpoints ✅ (done)
+- Hash passwords with bcrypt ✅ (done)
+- Issue JWTs on login ✅ (done)
+- Middleware for JWT validation ✅ (done)
+- Integrate social login (OAuth 2.0) for Google and Facebook: ✅ (done)
+  - Use Passport.js with Google and Facebook strategies ✅ (done)
+  - On successful OAuth login, create or update user record ✅ (done)
+  - Issue JWT for authenticated sessions ✅ (done)
+  - Store OAuth provider and provider user ID in users table ✅ (done)
 
 ### 4. Post Creation & Discovery
-- Endpoint for creating posts (validate input, capture location, store with precision)
-- Endpoint for discovering posts:
-  - Accepts user location, radius, pagination
-  - Uses PostGIS `ST_DWithin` for proximity
-  - Sorts by distance (ST_Distance) and recency
-  - Returns posts within reach radius
+- Endpoint for creating posts (validate input, capture location, store with precision) ✅ (done)
+- Endpoint for discovering posts: ✅ (done)
+  - Accepts user location, radius, pagination ✅
+  - Uses PostGIS `ST_DWithin` for proximity ✅
+  - Sorts by distance (ST_Distance) and recency ✅
+  - Returns posts within reach radius ✅
 - Real-time updates: (future step, e.g., with websockets)
 
 ### 5. Engagement Features
-- Comment endpoints (threaded, parent_comment_id)
-- Upvote/downvote endpoints (posts & comments)
-- Report endpoints (posts & comments)
-- Rate limiting on engagement endpoints
+- Comment endpoints (threaded, parent_comment_id) ✅ (done)
+- Upvote/downvote endpoints (posts & comments) ✅ (done)
+- Report endpoints (posts & comments) ✅ (done)
+- Rate limiting on engagement endpoints ✅ (done, via global rate limiter)
 
 ### 6. Security & Abuse Prevention
-- Input validation/sanitization (Joi)
-- Rate limiting (express-rate-limit)
-- Abuse detection (e.g., repeated reports, voting patterns)
-- Encrypt location data (use pgcrypto or application-level encryption)
-- GDPR compliance: allow users to delete data, anonymize location
+- Input validation/sanitization (Joi & express-validator) ✅ (done, see route validation)
+- Rate limiting (express-rate-limit) ✅ (done, global rate limiter in app)
+- Abuse detection (e.g., repeated reports, voting patterns) — To be implemented (monitor/report abuse patterns, add admin review endpoints in future)
+- Encrypt location data (use pgcrypto or application-level encryption) — Application-level encryption recommended for sensitive data, see design notes
+- GDPR compliance: allow users to delete data, anonymize location — To be implemented (add user data deletion/anonymization endpoints)
 
 ### 7. Performance & Scalability
-- Optimize queries (indexes, query plans)
-- Caching (e.g., Redis for hot queries)
-- Load testing (simulate 10,000+ users)
-- Ensure <500ms response for location queries
+- Optimize queries (indexes, query plans) — To be implemented (analyze with EXPLAIN, add more indexes as needed)
+- Caching (e.g., Redis for hot queries) — To be implemented (add Redis integration for frequently accessed endpoints)
+- Load testing (simulate 10,000+ users) — To be implemented (use tools like Artillery/JMeter)
+- Ensure <500ms response for location queries — To be monitored (add logging/metrics, optimize queries as needed)
 
 ### 8. Testing & Documentation
-- Write unit/integration tests (Jest, Supertest)
-- API documentation (OpenAPI/Swagger)
-- Deployment scripts (Docker, CI/CD)
+- Write unit/integration tests (Jest, Supertest) — To be implemented
+- API documentation (OpenAPI/Swagger) — To be implemented
+- Deployment scripts (Docker, CI/CD) — To be implemented
 
 ---
 
